@@ -7,6 +7,7 @@ type TWithAuthOptoins = {};
 
 export const withAuth = (axiosInstance: AxiosInstance, options: TWithAuthOptoins = {}): AxiosInstance => {
   const { requestInterceptor, errorResponseInterceptor } = createAxiosInterceptors({
+    getAxiosInstance: () => axiosInstance,
     getAccessToken: AuthService.getAccessToken.bind(AuthService),
     getRefreshToken: AuthService.getRefreshToken.bind(AuthService),
     onRefreshTokenError: AuthService.resetTokens.bind(AuthService),

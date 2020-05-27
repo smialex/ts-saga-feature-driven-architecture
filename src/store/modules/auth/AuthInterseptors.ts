@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosError } from "axios";
+import axios, { AxiosRequestConfig, AxiosError, AxiosInstance } from "axios";
 
 export interface IRefreshTokenResult {
   accessToken: string;
@@ -6,6 +6,7 @@ export interface IRefreshTokenResult {
 }
 
 interface ICreateInterceptorsParams {
+  getAxiosInstance?: () => AxiosInstance;
   getAccessToken: () => string | null;
   getRefreshToken: () => string | null;
   onRefreshTokenError: () => void;
@@ -16,6 +17,7 @@ interface ICreateInterceptorsParams {
 let refreshingPromise: ReturnType<(refreshToken: string) => Promise<IRefreshTokenResult>> | null = null;
 
 export const createAxiosInterceptors = ({
+  getAxiosInstance,
   getAccessToken,
   getRefreshToken,
   onRefreshTokenError,
@@ -46,13 +48,18 @@ export const createAxiosInterceptors = ({
 
     if (error?.response?.status === 401 && currentRefreshToken) {
       try {
-        refreshingPromise = requestRefreshToken(currentRefreshToken);
+        if (refreshingPromise == null) {
+          refreshingPromise = requestRefreshToken(currentRefreshToken);
+        }
         const { accessToken, refreshToken } = await refreshingPromise;
-        onRefreshTokenSuccess(refreshToken, accessToken);
+        onRefreshTokenSuccess(accessToken, refreshToken);
         refreshingPromise = null;
 
-        return axios({
+        const axiosInstance = (getAxiosInstance && getAxiosInstance()) || axios;
+
+        return axiosInstance({
           ...error.config,
+
           headers: {
             ...error.config.headers,
             Authorization: `Bearer ${accessToken}`,
