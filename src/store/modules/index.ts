@@ -2,7 +2,7 @@ import { combineReducers } from "redux";
 import { all } from "redux-saga/effects";
 import { loaderReducer } from "./loader";
 import { authReducer, authSaga } from "./auth";
-import { notificationReducer } from "./notifications";
+import { notificationReducer, notificationSaga } from "./notifications";
 
 export const commonReducers = combineReducers({
   loader: loaderReducer,
@@ -11,5 +11,5 @@ export const commonReducers = combineReducers({
 });
 
 export function* commonSaga() {
-  yield all([authSaga()]);
+  yield all([authSaga(), notificationSaga()]);
 }

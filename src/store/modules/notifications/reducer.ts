@@ -11,7 +11,9 @@ export const notificationReducer = (state = initialNotificationState, action: TA
     case "NOTIFICATION/SHOW":
       return [...state, action.payload];
     case "NOTIFICATION/HIDE":
-      return state.slice(1);
+      return state.filter(({ id }) => action.id !== id);
+    case "NOTIFICATION/HIDE_ALL":
+      return [];
     default:
       return state;
   }

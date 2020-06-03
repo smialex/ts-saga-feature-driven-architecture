@@ -17,12 +17,12 @@ export const useNotifications = () => {
     [dispatch]
   );
 
-  const hideNotification = useCallback(
+  const hideAllNotifications = useCallback(
     (payload: actions.INotification) => {
-      dispatch(actions.hideNotification());
+      dispatch(actions.hideAllNotification());
     },
     [dispatch]
   );
 
-  return { notifications, hideNotification, showNotification };
+  return { notifications, showNotification, hideAllNotifications };
 };

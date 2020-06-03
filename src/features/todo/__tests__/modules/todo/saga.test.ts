@@ -56,5 +56,5 @@ test("testing failure load todo items", () => {
     })
   );
 
-  expect(actual.value).toEqual(expected);
+  expect((actual.value as any).type).toEqual(expected.type);
 });

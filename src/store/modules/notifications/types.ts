@@ -1,2 +1,3 @@
 export const NOTIFICATION_SHOW = "NOTIFICATION/SHOW" as const;
 export const NOTIFICATION_HIDE = "NOTIFICATION/HIDE" as const;
+export const NOTIFICATION_HIDE_ALL = "NOTIFICATION/HIDE_ALL" as const;
