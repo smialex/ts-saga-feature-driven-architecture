@@ -12,9 +12,10 @@ export function* notificationWorker(action: TShowNotification) {
 }
 
 export function* notificationSaga() {
-  yield takeEvery((action: any) => {
-    const isNotify = action.type === NOTIFICATION_SHOW;
-    const hasAutoHideDuration = !!(action as TShowNotification).payload.notificationOptions?.autoHideDuration;
-    return isNotify && hasAutoHideDuration;
-  }, notificationWorker);
+  yield takeEvery(
+    (action: any) =>
+      action.type === NOTIFICATION_SHOW &&
+      !!(action as TShowNotification).payload.notificationOptions?.autoHideDuration,
+    notificationWorker
+  );
 }
